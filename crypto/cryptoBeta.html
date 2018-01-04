@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Crypto charts</title>
+<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script type="text/javascript">
+    window.onload = function() {
+        var dataPoints = [];
+	var min = 0; 
+        function getDataPointsFromCSV(csv) {
+            var dataPoints = csvLines = xy = [];
+            csvLines = csv.split(/[\r?\n|\r|\n]+/);
+            for (var i = 0; i < csvLines.length; i++)
+                if (csvLines[i].length > 0) {
+		    xy = csvLines[i].split(/,/);
+                    dataPoints.push({ 
+                        x: parseFloat(xy[0]),
+                        y: parseFloat(xy[1]) 		
+                    });
+                }
+            return dataPoints;
+        }
+	function getMinMaxPoints(csv) {
+		var minMax = csvlines = xy = [];
+		csvLines = csv.split(/[\r?\n|\r|\n]+/);
+		xy = csvLines[0].split(/,/);
+		minMax[0] = xy[0];
+		minMax[1] = xy[1] - 0.01;
+		return minMax;
+	}
+	
+	$.get("ripple.csv", function(data) {
+	    var chart = new CanvasJS.Chart("chartContainer", {
+		    title: {
+		         text: "Ripple",
+		    },
+      		    axisY:{
+			title: "US($)",
+			labelFontSize: 10,
+			minimum: getMinMaxPoints(data)[1],
+		    	interval: 0.01
+		    },
+		    data: [{
+		         type: "line",
+		         dataPoints: getDataPointsFromCSV(data)
+		      }]
+	     });
+		
+	      chart.render();
+	      alert(getDataPointsFromCSV(data).toString());
+	      alert(getMinMaxPoints(data)[0]);
+
+	});
+  }
+</script>
+</head>
+<body>
+	<div id="chartContainer" style="width:50%; height:1000px;"></div>
+</body>
+</html>
