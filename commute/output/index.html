@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>LM Commute times</title>
+	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+	<div id="myDiv" style="width:900px;height:500px;"></div>
+	<script>
+		Plotly.d3.csv("lmcommute.csv", function(err, rows){
+
+		function unpack(rows, key) {
+		return rows.map(function(row) { return row[key]; });
+		}
+
+
+		var trace1 = {
+		type: "scatter",
+		mode: "lines",
+		name: 'To LM',
+		x: unpack(rows, 'Time'),
+		y: unpack(rows, 'ToLM'),
+		line: {color: '#17BECF'}
+		}
+
+		var trace2 = {
+		type: "scatter",
+		mode: "lines",
+		name: 'From LM',
+		x: unpack(rows, 'Time'),
+		y: unpack(rows, 'FromLM'),
+		line: {color: '#7F7F7F'}
+		}
+
+		var data = [trace1,trace2];
+
+		var layout = {
+		title: 'LM Commute times',
+		};
+
+		Plotly.newPlot('myDiv', data, layout);
+		})
+	</script>
+</body>
+</html>
