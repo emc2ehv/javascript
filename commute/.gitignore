@@ -1,0 +1,4 @@
+runAstra
+output/*.log
+output/commute.csv
+output/insights.html
